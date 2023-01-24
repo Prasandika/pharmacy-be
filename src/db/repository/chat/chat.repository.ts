@@ -44,4 +44,11 @@ export class ChatRepository {
       $or: [{ senderId: userId }, { receiverUserId: userId }],
     });
   }
+
+  async updateSocketId(userId: string, socketId: string): Promise<any> {
+    return await this.chatModel.updateOne(
+      { userId: userId },
+      { socketId: socketId },
+    );
+  }
 }

@@ -1,3 +1,4 @@
+import { UserRole } from './../../../../enums/user-role.enum';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class UserDto {

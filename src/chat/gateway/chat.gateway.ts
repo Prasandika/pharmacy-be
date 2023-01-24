@@ -6,7 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Chat, Message } from '../services/chat/chat.interface';
-
+import { UserRole } from 'src/enums/user-role.enum';
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
   @WebSocketServer()
@@ -16,35 +16,36 @@ export class ChatGateway {
     private chatService: ChatService, //  private readonly chatAdminRepo: ChatAdminRepository,
   ) {}
 
-  adminId: string = '';
+  adminId: string;
 
   async handleConnection(event: any) {
-    let chat = new Chat();
-    chat.userId = event.id;
+    const chat = new Chat();
+    chat.userId = event.handshake?.query?.userId;
     chat.messages = [];
     this.chatService.create(chat);
+
     console.log('user connected', event.handshake.query.user_role);
     const userRole = event.handshake.query.user_role;
 
-    if (userRole == 'Admin') {
+    if (userRole == UserRole.Admin) {
       this.adminId = event.id;
-      // let res = await this.chatAdminRepo.create({ adminSocketId: event.id });
-    }
 
-    console.log('response', this.adminId);
+      console.log('admin id is', this.adminId);
+    }
   }
 
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {
-    let message = new Message();
-    let userId: string = '';
+    console.log('Payload', payload);
+    const message = new Message();
+    let userId = '';
 
-    if (payload.mode == 'Client') {
+    if (payload.mode == UserRole.Regular) {
       message.message = payload.message;
       message.senderId = client.id;
       message.receiverUserId = 'Admin';
       userId = client.id;
-    } else if (payload.mode == 'Admin') {
+    } else if (payload.mode == UserRole.Admin) {
       message.message = payload.message;
       message.senderId = payload.mode;
       message.receiverUserId = payload.receiverUserId;
@@ -52,11 +53,11 @@ export class ChatGateway {
     }
 
     this.chatService.update(message, userId);
-    console.log(message);
+    console.log('Message:', message);
 
-    if (payload.mode == 'Client') {
+    if (payload.mode == UserRole.Regular) {
       this.server.to(this.adminId).emit('message', message);
-    } else if (payload.mode == 'Admin') {
+    } else if (payload.mode == UserRole.Admin) {
       this.server.to(payload.receiverUserId).emit('message', message);
     }
 

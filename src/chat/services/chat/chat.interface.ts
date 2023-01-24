@@ -7,6 +7,7 @@ export class Message {
 
 export class Chat {
   userId: string;
+  socketId: string;
   messages: Message[];
 }
 

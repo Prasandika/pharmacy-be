@@ -1,3 +1,4 @@
+import { ChatModule } from './../../chat/chat.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import UsersSchema from 'src/db/schemas/users.schema';
@@ -11,7 +12,7 @@ import { UsersRepositoryService } from 'src/db/repository/users.repository/users
   imports: [
     MongooseModule.forFeature([{ name: 'Users', schema: UsersSchema }]),
 
-    CartsModule,
+    ChatModule,
   ],
   controllers: [UserController],
   providers: [UsersRepositoryService, UsersService],

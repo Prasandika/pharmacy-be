@@ -6,6 +6,11 @@ const ChatSchema = new mongoose.Schema({
     required: true,
   },
 
+  socketId: {
+    type: String,
+    required: true,
+  },
+
   messages: {
     type: Array,
     required: true,

@@ -25,4 +25,8 @@ export class ChatService {
   async update(chat: Message, id: string): Promise<any> {
     return this.chatRepository.update(id, chat);
   }
+
+  async updateSocketId(userId: string, socketId: string): Promise<any> {
+    return this.chatRepository.updateSocketId(userId, socketId);
+  }
 }
