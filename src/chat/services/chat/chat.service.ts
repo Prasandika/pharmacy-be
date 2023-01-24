@@ -1,7 +1,6 @@
-import { Message } from './../../../Interfaces/chat.interface';
-import { Chat } from 'src/Interfaces/chat.interface';
 import { Injectable } from '@nestjs/common';
-import { ChatRepository } from 'src/DB/Repositories/chat/chat.repository';
+import { ChatRepository } from 'src/db/repository/chat/chat.repository';
+import { Chat, Message } from './chat.interface';
 
 @Injectable()
 export class ChatService {
