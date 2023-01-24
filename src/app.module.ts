@@ -1,3 +1,4 @@
+import { ChatModule } from './chat/chat.module';
 import { ProductsModule } from './api/products/product.module';
 import { UsersModule } from './api/users/user.module';
 import { Module } from '@nestjs/common';
@@ -24,6 +25,7 @@ import { CartsModule } from './api/carts/carts.module';
     ProductsModule,
     OrdersModule,
     CartsModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

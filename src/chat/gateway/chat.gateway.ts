@@ -1,5 +1,3 @@
-import { Chat } from 'src/Interfaces/chat.interface';
-import { Message } from './../../Interfaces/chat.interface';
 import { ChatService } from './../services/chat/chat.service';
 
 import {
@@ -7,6 +5,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { Chat, Message } from '../services/chat/chat.interface';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway {

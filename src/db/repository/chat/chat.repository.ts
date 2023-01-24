@@ -1,8 +1,7 @@
-import { Message } from './../../../Interfaces/chat.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Chat } from 'src/Interfaces/chat.interface';
+import { Chat, Message } from 'src/chat/services/chat/chat.interface';
 
 @Injectable()
 export class ChatRepository {
