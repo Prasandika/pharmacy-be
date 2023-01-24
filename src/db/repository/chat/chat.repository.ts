@@ -18,6 +18,10 @@ export class ChatRepository {
     return await this.chatModel.findOne({ userId: id });
   }
 
+  async findByUserId(userId: string): Promise<Chat> {
+    return await this.chatModel.findOne({ userId: userId });
+  }
+
   async create(item: Chat): Promise<Chat> {
     const newItem = new this.chatModel(item);
 

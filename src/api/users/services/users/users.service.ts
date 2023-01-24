@@ -1,4 +1,3 @@
-import { ChatService } from './../../../../chat/services/chat/chat.service';
 import { CartDto } from './../../../carts/dto/cart.dto/cart.dto';
 import { User } from './../../interfaces/user.interface';
 import { Injectable } from '@nestjs/common';
@@ -7,10 +6,7 @@ import { Chat } from 'src/chat/services/chat/chat.interface';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly UserRepository: UsersRepositoryService,
-    private readonly chatService: ChatService,
-  ) {}
+  constructor(private readonly UserRepository: UsersRepositoryService) {}
 
   findAll(): Promise<User[]> {
     return this.UserRepository.findAll();
@@ -29,7 +25,7 @@ export class UsersService {
     const chatObj = new Chat();
     chatObj.userId = user.id;
     chatObj.messages = [];
-    await this.chatService.create(chatObj);
+    // await this.chatService.create(chatObj);
 
     return user;
   }

@@ -11,8 +11,6 @@ import { UsersRepositoryService } from 'src/db/repository/users.repository/users
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Users', schema: UsersSchema }]),
-
-    ChatModule,
   ],
   controllers: [UserController],
   providers: [UsersRepositoryService, UsersService],

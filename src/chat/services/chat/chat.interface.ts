@@ -3,6 +3,7 @@ export class Message {
   message: string;
   orderId: number;
   receiverUserId: string;
+  socketId: string;
 }
 
 export class Chat {

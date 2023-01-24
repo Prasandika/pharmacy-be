@@ -20,8 +20,11 @@ export class ChatGateway {
 
   async handleConnection(event: any) {
     const chat = new Chat();
+
+    // assign chat details
     chat.userId = event.handshake?.query?.userId;
     chat.messages = [];
+    chat.socketId = event.id;
     this.chatService.create(chat);
 
     console.log('user connected', event.handshake.query.user_role);
@@ -42,9 +45,9 @@ export class ChatGateway {
 
     if (payload.mode == UserRole.Regular) {
       message.message = payload.message;
-      message.senderId = client.id;
-      message.receiverUserId = 'Admin';
-      userId = client.id;
+      message.senderId = payload.senderId;
+      message.receiverUserId = this.adminId;
+      userId = payload.senderId;
     } else if (payload.mode == UserRole.Admin) {
       message.message = payload.message;
       message.senderId = payload.mode;
@@ -58,7 +61,10 @@ export class ChatGateway {
     if (payload.mode == UserRole.Regular) {
       this.server.to(this.adminId).emit('message', message);
     } else if (payload.mode == UserRole.Admin) {
-      this.server.to(payload.receiverUserId).emit('message', message);
+      this.chatService.getChatByUserId(payload.receiverUserId).then((chat) => {
+        console.log('user socket id', chat.socketId, chat.userId);
+        this.server.to(chat.socketId).emit('message', message);
+      });
     }
 
     return 'Hello world!';
