@@ -29,6 +29,11 @@ export class OrdersController {
     return await this.orderService.findOne(id);
   }
 
+  @Get('GetByUserId/:userId')
+  async getByUserId(@Param('userId') userId: string): Promise<Order[]> {
+    return await this.orderService.getByUserId(userId);
+  }
+
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -40,5 +45,12 @@ export class OrdersController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Order> {
     return this.orderService.delete(id);
+  }
+
+  @Delete('Product/:productId')
+  async deleteByProductId(
+    @Param('productId') productId: string,
+  ): Promise<Order> {
+    return this.orderService.deleteByProductId(productId);
   }
 }

@@ -26,10 +26,21 @@ export class OrdersRepositoryService {
   async delete(id: string): Promise<Order> {
     return await this.orderModel.findByIdAndRemove(id);
   }
+  async deleteByProductId(productId: string): Promise<Order> {
+    return await this.orderModel.remove({ productId: productId });
+  }
 
   async update(id: string, item: Order): Promise<Order> {
     return await this.orderModel.findByIdAndUpdate(id, item, {
       new: true,
     });
+  }
+
+  async getByUserId(userId: string): Promise<Order[]> {
+    if (userId == 'all') {
+      return await this.orderModel.find();
+    } else {
+      return await this.orderModel.find({ userId: userId });
+    }
   }
 }

@@ -1,10 +1,15 @@
+import { OrdersService } from './../../../orders/services/orders/orders.service';
 import { Product } from './../../interfaces/product.interface';
 import { Injectable } from '@nestjs/common';
 import { ProductsRepositoryService } from 'src/db/repository/products.repository/products.repository.service';
+import { Order } from 'src/api/orders/interfaces/order.interface';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly productsRepository: ProductsRepositoryService) {}
+  constructor(
+    private readonly productsRepository: ProductsRepositoryService,
+  ) // private ordersService: OrdersService,
+  {}
 
   findAll(): Promise<Product[]> {
     return this.productsRepository.findAll();
@@ -19,6 +24,8 @@ export class ProductsService {
   }
 
   async delete(id: string): Promise<Product> {
+    // this.ordersService.deleteByProductId(id);
+
     return this.productsRepository.delete(id);
   }
 
@@ -32,5 +39,14 @@ export class ProductsService {
 
   async getProductsByBoughtId(userId: string): Promise<Product[]> {
     return this.productsRepository.getProductsByBoughtId(userId);
+  }
+
+  async reduceQuantity(order: Order): Promise<Product> {
+    const product = await this.findOne(order.productId);
+    product.quantity -= order.quantity;
+
+    this.update(order.productId, product);
+
+    return product;
   }
 }

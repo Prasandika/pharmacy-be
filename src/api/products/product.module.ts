@@ -1,3 +1,4 @@
+import { OrdersModule } from './../orders/orders.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductsRepositoryService } from 'src/db/repository/products.repository/products.repository.service';

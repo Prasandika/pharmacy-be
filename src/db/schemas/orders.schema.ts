@@ -1,24 +1,16 @@
 import * as mongoose from 'mongoose';
 
 const OrdersSchema = new mongoose.Schema({
-  title: {
+  productId: {
     type: String,
     required: true,
   },
-  description: {
+  userId: {
     type: String,
     required: true,
   },
   quantity: {
     type: Number,
-    required: true,
-  },
-  price: {
-    type: String,
-    required: true,
-  },
-  imageUrl: {
-    type: String,
     required: true,
   },
 });

@@ -1,4 +1,6 @@
 export interface Order {
   id: string;
-  cartId: string;
+  productId: string;
+  userId: string;
+  quantity: number;
 }
