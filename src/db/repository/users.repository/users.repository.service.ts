@@ -41,10 +41,9 @@ export class UsersRepositoryService {
     });
   }
 
-  async authenticateUser(email: string, password: string): Promise<User> {
+  async authenticateUser(email: string): Promise<User> {
     const user = await this.userModel.findOne({
       email: email,
-      password: password,
     });
     if (!user) {
       throw new ForbiddenException('Error: No user found');

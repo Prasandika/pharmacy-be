@@ -1,8 +1,9 @@
 import { CartDto } from './../../../carts/dto/cart.dto/cart.dto';
 import { User } from './../../interfaces/user.interface';
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { UsersRepositoryService } from 'src/db/repository/users.repository/users.repository.service';
 import { Chat } from 'src/chat/services/chat/chat.interface';
+import { hashPassword, compareHashPassword } from '../../utils/bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,7 @@ export class UsersService {
   }
 
   async create(User: User): Promise<User> {
+    User.password = hashPassword(User.password);
     const user = await this.UserRepository.create(User);
     const cart = new CartDto();
     cart.userId = user.id;
@@ -39,6 +41,14 @@ export class UsersService {
   }
 
   async authenticateUser(email: string, password: string): Promise<User> {
-    return this.UserRepository.authenticateUser(email, password);
+    const user = await this.UserRepository.authenticateUser(email);
+
+    if (user) {
+      if (compareHashPassword(password, user.password)) {
+        return user;
+      } else {
+        throw new ForbiddenException('Invalid password');
+      }
+    }
   }
 }
