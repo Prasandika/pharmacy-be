@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../../../../auth/guards/jwt-auth.guard';
 import { UserDto } from './../../dto/user.dto/user.dto';
 import { UsersService } from './../../services/users/users.service';
 import { User } from './../../interfaces/user.interface';
@@ -9,6 +10,8 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 
 @Controller('users')
@@ -48,5 +51,12 @@ export class UserController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<User> {
     return this.userService.delete(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me/get')
+  me(@Req() req) {
+    const userId = req.user.userId;
+    return this.userService.findOne(userId);
   }
 }
